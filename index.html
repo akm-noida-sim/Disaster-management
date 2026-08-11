@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#071d1d" />
+    <title>SMART EVAC | Fire Drill Simulator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="SMART EVAC home"><span class="brand-mark">S</span><span>SMART <b>EVAC</b></span></a>
+        <div class="drill-chip"><span class="pulse"></span> LIVE DRILL <strong>FIRE EVACUATION</strong></div>
+        <div class="profile"><span class="avatar" id="profileAvatar">SE</span><span id="profileName">Not signed in</span><button id="analyticsButton" class="analytics-button" hidden>My progress</button><button id="logoutButton" class="logout-button" hidden>Sign out</button></div>
+      </header>
+      <div id="simulatorContent">
+      <section class="hero">
+        <div><p class="eyebrow">COLLEGE SAFETY TRAINING · LEVEL 01</p><h1>Make the safe choice.<br /><em>Get everyone out.</em></h1><p class="hero-copy">Navigate the Science Block, avoid the fire zone, and reach a safe exit before conditions worsen.</p></div>
+        <div class="hero-status"><span>SCENARIO</span><strong>Fire in Room 103</strong><small>Route C blocked · Exit B recommended</small></div>
+      </section>
+      <section class="dashboard">
+        <aside class="sidebar">
+          <div class="metric"><span class="metric-icon time-icon">◷</span><div><span>EVACUATION TIME</span><strong id="timer">00:00</strong></div></div>
+          <div class="metric"><span class="metric-icon safety-icon">✦</span><div><span>SAFETY SCORE</span><strong id="score">100 <small>/ 100</small></strong></div></div>
+          <div class="metric"><span class="metric-icon route-icon">⌁</span><div><span>ROUTE STATUS</span><strong id="routeStatus">CALCULATING</strong></div></div>
+          <div class="mission-card"><p class="card-label">YOUR OBJECTIVE</p><h2>Reach a safe exit</h2><p>Use <kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> or the controls. Keep clear of smoke and blocked routes.</p><div class="progress-track"><span id="progress"></span></div><small id="progressText">0% EVACUATED</small></div>
+          <div class="legend"><p class="card-label">MAP LEGEND</p><span><i class="legend-dot student"></i>You</span><span><i class="legend-dot exit"></i>Safe exit</span><span><i class="legend-dot hazard"></i>Fire hazard</span><span><i class="legend-dot blocked"></i>Blocked route</span></div>
+        </aside>
+        <section class="simulation-panel">
+          <div class="map-header"><div><p class="eyebrow">SCIENCE BLOCK · GROUND FLOOR</p><h2>Emergency evacuation map</h2></div><button id="restartButton" class="ghost-button">↻ Restart drill</button></div>
+          <div class="map-frame"><div class="north">N</div><div id="buildingMap" class="building-map" aria-label="Interactive evacuation map"></div><div class="map-caption"><span><i></i> Recommended route</span><span id="moves">0 MOVES</span></div></div>
+          <div class="controls" aria-label="Movement controls"><button data-move="up" aria-label="Move up">↑</button><div><button data-move="left" aria-label="Move left">←</button><button data-move="down" aria-label="Move down">↓</button><button data-move="right" aria-label="Move right">→</button></div></div>
+        </section>
+        <aside class="intel-panel">
+          <div class="alert-card"><div class="alert-head"><span class="fire-symbol">♨</span><span class="alert-tag">ACTIVE HAZARD</span></div><h2>Fire detected</h2><p>Room 103 is unsafe. Smoke is spreading into the east corridor.</p><div class="severity"><span>RISK LEVEL</span><b>HIGH</b><i><em></em></i></div></div>
+          <div class="recommendation"><p class="card-label">AI ROUTE GUIDANCE</p><h3 id="guidanceTitle">Take Exit B</h3><p id="guidanceText">Follow the highlighted route through the central corridor.</p><div class="route-detail"><span>SAFE PATH</span><strong id="pathLength">6 steps</strong></div></div>
+          <div class="decision-card"><p class="card-label">DECISION POINT</p><h3>Stair A has heavy smoke.</h3><p>Which way do you go?</p><div class="decision-actions"><button data-decision="unsafe">Stair A</button><button data-decision="safe">Stair B</button></div></div>
+          <div class="history"><div><p class="card-label">RECENT PERFORMANCE</p><button id="clearHistory" title="Clear saved results">Clear</button></div><ul id="historyList"><li><span>No completed drills yet.</span></li></ul></div>
+        </aside>
+      </section>
+      </div>
+      <section class="analytics-dashboard" id="analyticsDashboard" hidden>
+        <div class="analytics-header">
+          <div><p class="eyebrow">STUDENT PERFORMANCE</p><h1>Train. Review. <em>Improve.</em></h1><p>Use your completed drill data to spot strengths and build safer evacuation habits.</p></div>
+          <button id="backToSimulator" class="ghost-button">Back to simulator</button>
+        </div>
+        <div class="analytics-stats">
+          <article class="analytics-stat"><span>DRILLS COMPLETED</span><strong id="totalDrills">0</strong><small id="drillContext">Start your first drill</small></article>
+          <article class="analytics-stat"><span>AVERAGE SCORE</span><strong id="averageScore">--</strong><small id="scoreContext">No score data yet</small></article>
+          <article class="analytics-stat"><span>BEST SCORE</span><strong id="bestScore">--</strong><small id="bestContext">Complete a drill to set a record</small></article>
+          <article class="analytics-stat"><span>FASTEST EVACUATION</span><strong id="fastestTime">--:--</strong><small id="timeContext">Time your first safe exit</small></article>
+        </div>
+        <div class="analytics-grid">
+          <section class="performance-chart-section">
+            <div class="analytics-section-head"><div><p class="card-label">SCORE PROGRESSION</p><h2>Safety score by drill</h2></div><span id="chartTrend" class="trend-label">Awaiting data</span></div>
+            <div class="chart-wrap"><svg id="performanceChart" viewBox="0 0 650 250" role="img" aria-label="Safety score progression chart"><title>Safety score progression</title></svg><p id="chartEmpty" class="chart-empty">Complete a drill to see your score progression here.</p></div>
+          </section>
+          <section class="insight-section">
+            <p class="card-label">PERSONAL SAFETY INSIGHT</p><h2 id="insightTitle">Your training starts here</h2>
+            <p id="insightText">Complete the fire drill, then return here to review your safety decisions and evacuation efficiency.</p>
+            <div class="insight-rule"></div>
+            <p class="card-label">NEXT FOCUS</p><p id="focusText" class="focus-text">Follow the highlighted route and choose Stair B when smoke is detected.</p>
+          </section>
+          <section class="drill-history-section">
+            <div class="analytics-section-head"><div><p class="card-label">DRILL HISTORY</p><h2>Recent attempts</h2></div><span id="historyCount" class="history-count">0 attempts</span></div>
+            <ul id="analyticsHistory" class="analytics-history"><li class="analytics-empty">No completed drills yet. Your next result will appear here.</li></ul>
+          </section>
+        </div>
+      </section>
+    </main>
+    <div class="modal-backdrop" id="resultModal" hidden><section class="result-modal" role="dialog" aria-modal="true" aria-live="assertive" aria-labelledby="resultTitle"><span class="completion-icon">✓</span><p class="eyebrow">EVACUATION COMPLETE</p><h2 id="resultTitle">You reached Exit B</h2><p id="resultSummary">A calm, safe evacuation.</p><div class="result-stats"><div><span>TIME</span><strong id="finalTime">00:00</strong></div><div><span>SCORE</span><strong id="finalScore">100</strong></div><div><span>MISTAKES</span><strong id="finalMistakes">0</strong></div></div><button id="newDrillButton" class="primary-button">Start another drill</button></section></div>
+    <div class="auth-backdrop" id="authModal" hidden>
+      <section class="auth-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+        <div class="auth-brand"><span class="brand-mark">S</span><span>SMART <b>EVAC</b></span></div>
+        <p class="eyebrow">STUDENT TRAINING PORTAL</p>
+        <h2 id="authTitle">Welcome back</h2>
+        <p class="auth-copy" id="authDescription">Sign in to save your evacuation performance and continue your safety training.</p>
+        <form id="authForm" data-mode="login">
+          <label id="nameField" hidden>Full name<input id="authName" name="name" type="text" minlength="2" maxlength="80" autocomplete="name" placeholder="Your full name" /></label>
+          <label>Email address<input id="authEmail" name="email" type="email" required autocomplete="email" placeholder="you@college.edu" /></label>
+          <label>Password<input id="authPassword" name="password" type="password" required minlength="6" autocomplete="current-password" placeholder="At least 6 characters" /></label>
+          <p id="authError" class="auth-error" role="alert" hidden></p>
+          <button id="authSubmit" class="primary-button" type="submit">Sign in</button>
+        </form>
+        <p class="auth-switch"><span id="authSwitchText">New to SMART EVAC?</span> <button id="authSwitch" type="button">Create an account</button></p>
+        <div class="auth-divider"><span>OR</span></div>
+        <button id="demoButton" class="demo-button" type="button">Continue in demo mode</button>
+        <p class="auth-note">Your account keeps scores and drill results separate from other students.</p>
+      </section>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

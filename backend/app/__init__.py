@@ -1,0 +1,1 @@
+"""SMART EVAC backend package."""
