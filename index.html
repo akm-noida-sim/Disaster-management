@@ -11,13 +11,13 @@
     <main class="app-shell">
       <header class="topbar">
         <a class="brand" href="#" aria-label="SMART EVAC home"><span class="brand-mark">S</span><span>SMART <b>EVAC</b></span></a>
-        <div class="drill-chip"><span class="pulse"></span> LIVE DRILL <strong>FIRE EVACUATION</strong></div>
-        <div class="profile"><span class="avatar" id="profileAvatar">SE</span><span id="profileName">Not signed in</span><button id="analyticsButton" class="analytics-button" hidden>My progress</button><button id="logoutButton" class="logout-button" hidden>Sign out</button></div>
+        <div class="drill-chip"><span class="pulse"></span> LIVE DRILL <strong id="liveDrillLabel">FIRE EVACUATION</strong></div>
+        <div class="profile"><span class="avatar" id="profileAvatar">SE</span><span id="profileName">Not signed in</span><button id="selectDrillButton" class="analytics-button" hidden>Select drill</button><button id="analyticsButton" class="analytics-button" hidden>My progress</button><button id="logoutButton" class="logout-button" hidden>Sign out</button></div>
       </header>
       <div id="simulatorContent">
       <section class="hero">
-        <div><p class="eyebrow">COLLEGE SAFETY TRAINING · LEVEL 01</p><h1>Make the safe choice.<br /><em>Get everyone out.</em></h1><p class="hero-copy">Navigate the Science Block, avoid the fire zone, and reach a safe exit before conditions worsen.</p></div>
-        <div class="hero-status"><span>SCENARIO</span><strong>Fire in Room 103</strong><small>Route C blocked · Exit B recommended</small></div>
+        <div><p class="eyebrow">COLLEGE SAFETY TRAINING · LEVEL 01</p><h1>Make the safe choice.<br /><em>Get everyone out.</em></h1><p class="hero-copy" id="heroDescription">Navigate the Science Block, avoid the fire zone, and reach a safe exit before conditions worsen.</p></div>
+        <div class="hero-status"><span>SCENARIO</span><strong id="scenarioTitle">Fire in Room 103</strong><small id="scenarioSubtitle">Route C blocked · Exit B recommended</small></div>
       </section>
       <section class="dashboard">
         <aside class="sidebar">
@@ -25,21 +25,76 @@
           <div class="metric"><span class="metric-icon safety-icon">✦</span><div><span>SAFETY SCORE</span><strong id="score">100 <small>/ 100</small></strong></div></div>
           <div class="metric"><span class="metric-icon route-icon">⌁</span><div><span>ROUTE STATUS</span><strong id="routeStatus">CALCULATING</strong></div></div>
           <div class="mission-card"><p class="card-label">YOUR OBJECTIVE</p><h2>Reach a safe exit</h2><p>Use <kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> or the controls. Keep clear of smoke and blocked routes.</p><div class="progress-track"><span id="progress"></span></div><small id="progressText">0% EVACUATED</small></div>
-          <div class="legend"><p class="card-label">MAP LEGEND</p><span><i class="legend-dot student"></i>You</span><span><i class="legend-dot exit"></i>Safe exit</span><span><i class="legend-dot hazard"></i>Fire hazard</span><span><i class="legend-dot blocked"></i>Blocked route</span></div>
+          <div class="legend"><p class="card-label">MAP LEGEND</p><span><i class="legend-dot student"></i>You</span><span><i class="legend-dot exit"></i>Safe exit</span><span><i class="legend-dot hazard"></i><span id="hazardLegend">Active hazard</span></span><span><i class="legend-dot blocked"></i>Blocked route</span></div>
         </aside>
         <section class="simulation-panel">
-          <div class="map-header"><div><p class="eyebrow">SCIENCE BLOCK · GROUND FLOOR</p><h2>Emergency evacuation map</h2></div><button id="restartButton" class="ghost-button">↻ Restart drill</button></div>
+          <div class="map-header"><div><p class="eyebrow" id="mapScenarioLabel">SCIENCE BLOCK · GROUND FLOOR</p><h2>Emergency evacuation map</h2></div><button id="restartButton" class="ghost-button">↻ Restart drill</button></div>
           <div class="map-frame"><div class="north">N</div><div id="buildingMap" class="building-map" aria-label="Interactive evacuation map"></div><div class="map-caption"><span><i></i> Recommended route</span><span id="moves">0 MOVES</span></div></div>
           <div class="controls" aria-label="Movement controls"><button data-move="up" aria-label="Move up">↑</button><div><button data-move="left" aria-label="Move left">←</button><button data-move="down" aria-label="Move down">↓</button><button data-move="right" aria-label="Move right">→</button></div></div>
         </section>
         <aside class="intel-panel">
-          <div class="alert-card"><div class="alert-head"><span class="fire-symbol">♨</span><span class="alert-tag">ACTIVE HAZARD</span></div><h2>Fire detected</h2><p>Room 103 is unsafe. Smoke is spreading into the east corridor.</p><div class="severity"><span>RISK LEVEL</span><b>HIGH</b><i><em></em></i></div></div>
+          <div class="alert-card"><div class="alert-head"><span class="fire-symbol" id="hazardIcon">♨</span><span class="alert-tag">ACTIVE HAZARD</span></div><h2 id="hazardTitle">Fire detected</h2><p id="hazardDescription">Room 103 is unsafe. Smoke is spreading into the east corridor.</p><div class="severity"><span>RISK LEVEL</span><b id="riskLevel">HIGH</b><i><em id="riskBar"></em></i></div></div>
           <div class="recommendation"><p class="card-label">AI ROUTE GUIDANCE</p><h3 id="guidanceTitle">Take Exit B</h3><p id="guidanceText">Follow the highlighted route through the central corridor.</p><div class="route-detail"><span>SAFE PATH</span><strong id="pathLength">6 steps</strong></div></div>
-          <div class="decision-card"><p class="card-label">DECISION POINT</p><h3>Stair A has heavy smoke.</h3><p>Which way do you go?</p><div class="decision-actions"><button data-decision="unsafe">Stair A</button><button data-decision="safe">Stair B</button></div></div>
+          <div class="decision-card"><p class="card-label">DECISION POINT</p><h3 id="decisionTitle">Stair A has heavy smoke.</h3><p id="decisionPrompt">Which way do you go?</p><div class="decision-actions"><button id="unsafeDecision" data-decision="unsafe">Stair A</button><button id="safeDecision" data-decision="safe">Stair B</button></div></div>
           <div class="history"><div><p class="card-label">RECENT PERFORMANCE</p><button id="clearHistory" title="Clear saved results">Clear</button></div><ul id="historyList"><li><span>No completed drills yet.</span></li></ul></div>
         </aside>
       </section>
       </div>
+      <section class="building-command" id="buildingCommandCenter">
+        <div class="building-command-header">
+          <div>
+            <p class="eyebrow">MULTI-FLOOR EVACUATION SYSTEM</p>
+            <h1>College building <em>command center.</em></h1>
+            <p>Manual classroom location, per-floor digital alerts, and A* routing to one of four ground-floor exits via the safest available staircase.</p>
+          </div>
+          <span class="training-tag">TRAINING MODE · NO LIVE TRACKING</span>
+        </div>
+        <div class="building-command-grid">
+          <aside class="building-controls">
+            <p class="card-label">1 · SET STUDENT LOCATION</p>
+            <label>Current floor<select id="buildingFloorSelect" class="building-select"></select></label>
+            <label>Current classroom<select id="buildingRoomSelect" class="building-select"></select></label>
+            <button id="applyBuildingLocation" class="building-primary" type="button">Set classroom location</button>
+            <p class="building-control-note">Students can select their current room manually during a drill. QR room check-in can be added later.</p>
+            <div class="building-divider"></div>
+            <p class="card-label">2 · SIMULATE A HAZARD</p>
+            <label>Hazard floor<select id="hazardFloorSelect" class="building-select"></select></label>
+            <label>Restricted zone<select id="hazardZoneSelect" class="building-select">
+              <option value="stair-n">North staircase</option>
+              <option value="stair-e">East staircase</option>
+              <option value="stair-s">South staircase</option>
+              <option value="stair-w">West staircase</option>
+              <option value="hub">Central corridor</option>
+            </select></label>
+            <div class="building-action-row"><button id="applyBuildingHazard" class="building-secondary" type="button">Restrict zone</button><button id="clearBuildingHazard" class="building-clear" type="button">Clear</button></div>
+          </aside>
+          <section class="floor-map-panel">
+            <div class="floor-map-header"><div><p class="card-label">BUILDING MAP</p><h2 id="floorMapTitle">Ground Floor</h2></div><span id="mapRouteStatus" class="map-route-status">ROUTE READY</span></div>
+            <div id="floorTabs" class="floor-tabs" role="tablist" aria-label="Choose a floor to view"></div>
+            <div class="floor-map-shell">
+              <div id="multiFloorMap" class="multi-floor-map" aria-label="Interactive floor map"></div>
+              <p id="floorMapLegend" class="floor-map-legend">Select a classroom to see its safest route.</p>
+            </div>
+          </section>
+          <aside class="building-route-panel">
+            <div class="route-summary">
+              <p class="card-label">A* EVACUATION ROUTE</p>
+              <h2 id="buildingRouteTitle">Choose a classroom</h2>
+              <p id="buildingRouteText">Set the student’s current classroom to calculate the shortest safe route through a staircase to a ground-floor exit.</p>
+              <div class="route-stat-row"><span>SAFE PATH</span><strong id="buildingRouteDistance">--</strong></div>
+              <ol id="buildingRouteSteps" class="building-route-steps"><li>Awaiting room selection</li></ol>
+            </div>
+            <div class="floor-alert-panel">
+              <p class="card-label">FLOOR ALERT SIMULATION</p>
+              <h3 id="floorAlertTitle">Ground Floor digital alert</h3>
+              <p id="floorAlertText">Ready to broadcast a training evacuation message to occupants on this floor.</p>
+              <button id="sendFloorAlert" class="building-alert-button" type="button">Broadcast floor alert</button>
+              <p id="floorAlertStatus" class="floor-alert-status" aria-live="polite">No alert has been broadcast.</p>
+            </div>
+          </aside>
+        </div>
+        <div class="building-footnote"><span>Building model:</span> 5 levels · 8 rooms per level · 4 staircases per level · 4 building exits on the ground floor. Exit routing prioritizes an available staircase over the geographically nearest direction.</div>
+      </section>
       <section class="analytics-dashboard" id="analyticsDashboard" hidden>
         <div class="analytics-header">
           <div><p class="eyebrow">STUDENT PERFORMANCE</p><h1>Train. Review. <em>Improve.</em></h1><p>Use your completed drill data to spot strengths and build safer evacuation habits.</p></div>
@@ -69,7 +124,7 @@
         </div>
       </section>
     </main>
-    <div class="modal-backdrop" id="resultModal" hidden><section class="result-modal" role="dialog" aria-modal="true" aria-live="assertive" aria-labelledby="resultTitle"><span class="completion-icon">✓</span><p class="eyebrow">EVACUATION COMPLETE</p><h2 id="resultTitle">You reached Exit B</h2><p id="resultSummary">A calm, safe evacuation.</p><div class="result-stats"><div><span>TIME</span><strong id="finalTime">00:00</strong></div><div><span>SCORE</span><strong id="finalScore">100</strong></div><div><span>MISTAKES</span><strong id="finalMistakes">0</strong></div></div><button id="newDrillButton" class="primary-button">Start another drill</button></section></div>
+    <div class="modal-backdrop" id="resultModal" hidden><section class="result-modal" role="dialog" aria-modal="true" aria-live="assertive" aria-labelledby="resultTitle"><span class="completion-icon">✓</span><p class="eyebrow">EVACUATION COMPLETE</p><h2 id="resultTitle">You reached Exit B</h2><p id="resultSummary">A calm, safe evacuation.</p><div class="result-stats"><div><span>TIME</span><strong id="finalTime">00:00</strong></div><div><span>SCORE</span><strong id="finalScore">100</strong></div><div><span>MISTAKES</span><strong id="finalMistakes">0</strong></div></div><button id="newDrillButton" class="primary-button">Choose another drill</button></section></div>
     <div class="auth-backdrop" id="authModal" hidden>
       <section class="auth-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
         <div class="auth-brand"><span class="brand-mark">S</span><span>SMART <b>EVAC</b></span></div>
@@ -87,6 +142,15 @@
         <div class="auth-divider"><span>OR</span></div>
         <button id="demoButton" class="demo-button" type="button">Continue in demo mode</button>
         <p class="auth-note">Your account keeps scores and drill results separate from other students.</p>
+      </section>
+    </div>
+    <div class="scenario-backdrop" id="scenarioModal" hidden>
+      <section class="scenario-modal" role="dialog" aria-modal="true" aria-labelledby="scenarioPickerTitle">
+        <div class="scenario-picker-head">
+          <div><p class="eyebrow">CHOOSE YOUR NEXT DRILL</p><h2 id="scenarioPickerTitle">Practice the right response</h2><p>Select a scenario to update the map, hazards, evacuation route, and decision point.</p></div>
+          <button id="closeScenarioPicker" class="close-picker" type="button" aria-label="Close drill selector">×</button>
+        </div>
+        <div class="scenario-options" id="scenarioOptions"></div>
       </section>
     </div>
     <script src="app.js"></script>
