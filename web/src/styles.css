@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+:root { font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: #e6f2ef; background: #061918; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; opacity: .5; }
+.console-card { border: 1px solid rgba(147, 255, 200, .18); border-radius: 18px; background: #0b2b29; padding: 20px; box-shadow: 0 20px 50px rgba(0, 0, 0, .15); }
+.console-label { margin: 0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; font-weight: 700; letter-spacing: .12em; color: #b9ff39; }
+.floor-button { display: flex; width: 100%; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,.12); border-radius: 8px; background: transparent; padding: 10px 11px; color: #c7dad6; text-align: left; font-size: 13px; }
+.floor-button:hover, .floor-button.is-active { border-color: #b9ff39; background: rgba(185,255,57,.1); color: #e9ffbb; }
+.floor-button span { font-family: ui-monospace, monospace; font-size: 10px; color: #78b6ab; }
+.upload-control { display: block; border: 1px dashed rgba(185,255,57,.5); border-radius: 9px; padding: 10px; color: #dfffb2; font-size: 12px; text-align: center; }
+.upload-control input { display: block; width: 100%; margin-top: 7px; color: #9ebbb5; font-size: 11px; }
+.map-shell { position: relative; min-height: 580px; overflow: hidden; border: 1px solid rgba(147, 255, 200, .22); border-radius: 18px; background: radial-gradient(circle at 50% 50%, #164c46 0, #0d302e 38%, #071f1e 100%); }
+.floor-plan-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: .34; mix-blend-mode: screen; }
+.floor-map { position: relative; z-index: 1; display: block; width: 100%; height: 580px; }
+.floor-map.is-placing { cursor: crosshair; }
+.map-edge { stroke: #467a72; stroke-width: 1.7; stroke-linecap: round; opacity: .72; }
+.map-edge.is-routed { stroke: #c4ff43; stroke-width: 2.7; filter: drop-shadow(0 0 3px #b9ff39); }
+.map-node { cursor: pointer; outline: none; }
+.map-node rect, .map-node circle { stroke: #7ca59c; stroke-width: 1.1; fill: #164c46; transition: .15s ease; }
+.map-node--corridor circle { fill: #5dcfc3; stroke: #b4fff5; }
+.map-node--stair circle { fill: #1f746a; stroke: #8ef8de; }
+.map-node--exit circle { fill: #73d6d0; stroke: #dcfffb; }
+.map-node--room rect { fill: #1c554e; }
+.map-node text { fill: #d8f4ed; font-size: 3px; text-anchor: middle; pointer-events: none; font-weight: 700; }
+.map-node:hover rect, .map-node:hover circle, .map-node.is-selected rect, .map-node.is-selected circle { stroke: #c4ff43; stroke-width: 2; filter: drop-shadow(0 0 4px rgba(196,255,67,.8)); }
+.map-node.is-routed rect, .map-node.is-routed circle { fill: #a2cd42; stroke: #e1ff9b; }
+.map-node.is-blocked rect, .map-node.is-blocked circle { fill: #a44335; stroke: #ff8d69; }
+.simulation-agent circle { fill: #c4ff43; stroke: #f1ffd1; stroke-width: 1.2; filter: drop-shadow(0 0 3px #c4ff43); }.simulation-agent text { fill: #061918; font-size: 2.5px; font-weight: 900; text-anchor: middle; pointer-events: none; }
+.map-legend { position: absolute; z-index: 2; bottom: 15px; left: 15px; display: flex; flex-wrap: wrap; gap: 10px; border-radius: 8px; background: rgba(4,20,19,.86); padding: 9px 11px; font-size: 11px; color: #cadeda; }
+.map-legend span { display: flex; align-items: center; gap: 5px; }.map-legend i { width: 9px; height: 9px; border-radius: 50%; }.legend-room { background: #1c554e; border: 1px solid #7ca59c; }.legend-stair { background: #1f746a; }.legend-exit { background: #73d6d0; }.legend-blocked { background: #a44335; }
+input, select { min-width: 0; width: 100%; border: 1px solid rgba(255,255,255,.18); border-radius: 8px; background: #082321; padding: 10px; color: #e9f6f3; outline: none; font-size: 13px; } input:focus, select:focus { border-color: #b9ff39; }
+.primary-button, .secondary-button, .danger-button { border-radius: 8px; padding: 10px 12px; border: 1px solid transparent; font-size: 13px; font-weight: 700; }.primary-button { background: #b9ff39; color: #082321; }.secondary-button { border-color: #7aa69d; background: transparent; color: #d2e6e1; }.danger-button { width: 100%; border-color: #d87959; background: rgba(180,68,43,.15); color: #ffb39b; }.primary-button:hover { background: #d3ff6e; }
+@media (max-width: 767px) { .map-shell, .floor-map { min-height: 430px; height: 430px; }.map-legend { right: 10px; bottom: 10px; left: 10px; }.console-card { padding: 16px; } }

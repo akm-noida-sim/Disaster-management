@@ -1,5 +1,6 @@
 # Created automatically on first API run.
 smart_evac.db
+storage/
 
 # Local Python environments and generated files.
 .venv/

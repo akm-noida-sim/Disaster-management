@@ -1,0 +1,4 @@
+# Optional: install only on a configured camera/vision worker.
+# The base API remains lightweight and never downloads model weights itself.
+opencv-python>=4.10,<5
+ultralytics>=8.3,<9

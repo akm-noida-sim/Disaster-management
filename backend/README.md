@@ -1,29 +1,35 @@
 # SMART EVAC API
 
-## 1. Create and activate a virtual environment
+FastAPI backend for editable indoor building graphs, occupancy, hazards, route planning, event delivery, student drills, and authentication.
 
-From the project root in PowerShell:
+## Run
 
-    python -m venv backend\.venv
-    backend\.venv\Scripts\Activate.ps1
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python -m uvicorn app.main:app --reload --app-dir backend
+```
 
-## 2. Install dependencies
+Run from the repository root for the last command. Swagger is available at `http://127.0.0.1:8000/docs`.
 
-    python -m pip install -r backend\requirements.txt
+## Important endpoints
 
-## 3. Run the API
+- `POST /api/auth/register` and `POST /api/auth/login` — signed bearer session response.
+- `GET /api/buildings`, `POST /api/buildings/graph`, and `POST /api/buildings/sample` — building graph management.
+- `POST /api/buildings/{id}/floors/{floor}/floor-plan` — attach a PNG/JPEG/WebP floor plan.
+- `PUT /api/buildings/{id}/occupancy` — manual, simulation, sensor, or vision occupancy updates.
+- `POST /api/buildings/{id}/hazards` — activates a hazard; a blocking hazard removes that graph node from route calculations.
+- `POST /api/buildings/{id}/evacuation-plan` — weighted A* or Dijkstra multi-exit plan.
+- `WS /api/buildings/{id}/events` — occupancy, hazard, and plan update notifications.
 
-    python -m uvicorn app.main:app --reload --app-dir backend
+The `POST`, `PUT`, and `DELETE` endpoints that change building safety data require an administrator bearer token when `SMART_EVAC_REQUIRE_AUTH=true`. Development mode is permissive to make the existing local student simulator work without changes.
 
-The API runs at http://127.0.0.1:8000. Open http://127.0.0.1:8000/docs for the interactive Swagger documentation. The frontend is allowed to call this API from VS Code Preview on port 3000 and Live Server on port 5500.
+## Sample data and tests
 
-## MVP endpoints
+```powershell
+backend\.venv\Scripts\python.exe backend\scripts\seed_sample.py
+backend\.venv\Scripts\python.exe -m pytest -q backend\tests
+```
 
-- GET /api/health — API health check
-- POST /api/auth/register — create a student account
-- POST /api/auth/login — validate a student account
-- POST /api/results — save a completed drill
-- GET /api/results — view saved results
-- DELETE /api/results — clear one student's saved results
-
-SQLite is used for the first implementation and creates backend/smart_evac.db automatically. PostgreSQL can replace this in the deployment phase.
+Install `requirements-vision.txt` only in a trained and calibrated camera worker environment. Never treat an uncalibrated camera inference as an authoritative occupancy count.

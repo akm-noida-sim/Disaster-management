@@ -20,6 +20,12 @@ class StudentResponse(BaseModel):
     id: int
     name: str
     email: str
+    role: str = "student"
+
+
+class AuthResponse(StudentResponse):
+    access_token: str
+    token_type: str = "bearer"
 
 
 class DrillResultCreate(BaseModel):
